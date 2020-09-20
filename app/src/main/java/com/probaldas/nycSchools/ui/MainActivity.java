@@ -1,8 +1,10 @@
-package com.probaldas.nycSchools;
+package com.probaldas.nycSchools.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.probaldas.nycSchools.R;
 
 public class MainActivity extends AppCompatActivity {
 
