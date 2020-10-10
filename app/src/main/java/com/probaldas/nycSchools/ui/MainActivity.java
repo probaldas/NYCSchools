@@ -1,6 +1,7 @@
 package com.probaldas.nycSchools.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.probaldas.nycSchools.R;
 import com.probaldas.nycSchools.ui.school.SchoolListViewModel;
+import com.probaldas.nycSchools.ui.school.adapter.SchoolListPagedAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,5 +32,19 @@ public class MainActivity extends AppCompatActivity {
         // Setup recycler view
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        getDataFromServer();
+    }
+
+    private void getDataFromServer() {
+        // Instantiate PagedAdapter
+        final SchoolListPagedAdapter adapter = new SchoolListPagedAdapter(this);
+
+        mViewModel.getSchoolDetailsList().observe(this, schoolDetails -> {
+            Log.i(TAG, "onChanged called and list size is: " + schoolDetails.size() + ".");
+            adapter.submitList(schoolDetails);
+        });
+
+        recyclerView.setAdapter(adapter);
     }
 }
