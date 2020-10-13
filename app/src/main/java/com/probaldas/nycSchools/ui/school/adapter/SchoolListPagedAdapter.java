@@ -1,16 +1,20 @@
 package com.probaldas.nycSchools.ui.school.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.probaldas.nycSchools.databinding.SchoolListItemBinding;
 import com.probaldas.nycSchools.models.SchoolDetails;
+import com.probaldas.nycSchools.ui.details.SchoolDetailsFragment;
 
 import java.util.Objects;
 
@@ -54,7 +58,16 @@ public class SchoolListPagedAdapter extends PagedListAdapter<SchoolDetails, Scho
         final SchoolViewModel schoolViewModel = getData(Objects.requireNonNull(getItem(position)));
         holder.bind(schoolViewModel);
 
+        holder.getItemBinding().schoolRowCL.setOnClickListener(v -> {
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            SchoolDetailsFragment schoolDetailsFragment = SchoolDetailsFragment.newInstance();
 
+            Bundle args = new Bundle();
+            args.putParcelable(SCHOOL_DETAILS, getItem(position));
+            schoolDetailsFragment.setArguments(args);
+
+            schoolDetailsFragment.show(fragmentManager, "school_details");
+        });
     }
 
     private SchoolViewModel getData(SchoolDetails schoolDetails) {
